@@ -1,0 +1,31 @@
+---
+driver:
+  name: hyperv
+  parent_vhd_folder: D:\HyperV\WindowsServer2016\VirtualHardDisks
+  parent_vhd_name: WindowsServer2016.vhdx
+  vm_switch: JotechExternal
+  memory_startup_bytes: 2GB
+  vm_generation: 2
+  enable_guest_services : true
+  
+provisioner:
+  name: chef_zero
+
+transport:
+  password: P@ssw0rd
+  elevated: true
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: windows-2016
+
+suites:
+  - name: default
+    run_list:
+      - recipe[learn_chef_iis::default]
+    verifier:
+      inspec_tests:
+        - test/smoke/default
+    attributes:
